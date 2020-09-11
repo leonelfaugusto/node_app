@@ -1,0 +1,12 @@
+extends layout
+
+block conteudo
+    if contactos && contactos.length > 0
+        div
+            ul
+                each contacto in contactos
+                    li
+                        a(href="/contacto/" + contacto._id)=contacto.name
+    else
+        div
+            h3 Sem dados
