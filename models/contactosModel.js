@@ -6,11 +6,11 @@ const contacto = (mongoose) => {
         new mongoose.Schema({
             name: {
                 type: String,
-                require: true,
+                required: true
             },
             telefone: {
                 type: Number,
-                require: true,
+                required: true
             },
         })
     );

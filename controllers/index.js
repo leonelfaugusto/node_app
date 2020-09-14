@@ -1,9 +1,9 @@
 "use strict"; 
 
-let HomeController = require('./HomeController');
-let dadosIniciais = require('../data/contactos');
-let models = require('../models');
+const ContactsController = require('./ContactsController');
+const UserController = require('./UserController');
 
-module.exports.init = (app, mongoose) => {
-    new HomeController(dadosIniciais.contactos).init(app, models(mongoose));
+module.exports.init = (app, models) => {
+    new ContactsController().init(app, models);
+    new UserController().init(app, models);
 }
