@@ -11,13 +11,13 @@ let controllers = require('./controllers');
 let app = express();
 
 app.set('view engine', 'pug');
- 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
     extended: true
 }));
 
-mongoose.connect(process.env.DATABASE, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
+mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true, });
 
 // Verificação da conexão.
 const db = mongoose.connection;
