@@ -1,5 +1,7 @@
 "use strict";
 
+const { createToken, comparePassword } = require('../lib/auth');
+
 class UserController {
 
     init(app, models) {
@@ -9,6 +11,25 @@ class UserController {
         app.put("/users/:id", (req, res) => this.edit.call(this, req, res, models));
         app.put("/users/:id/contact", (req, res) => this.insertContact.call(this, req, res, models));
         app.delete("/users/:id", (req, res) => this.delete.call(this, req, res, models));
+
+        // Sigin
+        app.post('/signin', (req, res) => this.signIn.call(this, req, res, models));
+    }
+
+    async signIn(req, res, models) {
+        const { email, password } = req.body;
+        const user = await models.User.findOne({ email });
+        if (user) {
+            if (await comparePassword(password, user.password)) {
+                res.status(200).json({
+                    token: await createToken(user),
+                })
+            } else {
+                res.status(400).json({ error: 'Invalid Password' });
+            }
+        } else {
+            res.status(400).json({ error: 'No user found' });
+        }
     }
 
     async index(req, res, { User }) {
