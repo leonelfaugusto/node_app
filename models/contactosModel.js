@@ -1,18 +1,27 @@
 "use strict";
 
 const contacto = (mongoose) => {
-    const Contacto = mongoose.model(
-        'contacto',
-        new mongoose.Schema({
+    const ContactsSchema = new mongoose.Schema(
+        {
             name: {
                 type: String,
                 required: true
             },
             telefone: {
                 type: Number,
-                required: true
+                required: true,
+                min: 100000000,
+                max: 999999999,
             },
-        })
+        },
+        {
+            timestamps: true,
+        }
+    );
+
+    const Contacto = mongoose.model(
+        'contacto',
+        ContactsSchema,
     );
     return Contacto;
 }

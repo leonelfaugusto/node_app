@@ -1,14 +1,16 @@
 "use strict";
 
+const { isAdmin } = require('../lib/auth')
+
 class UserController {
 
     init(app, models) {
-        app.get("/users", (req, res) => this.index.call(this, req, res, models));
-        app.get("/users/:id", (req, res) => this.user.call(this, req, res, models));
-        app.post("/users", (req, res) => this.insert.call(this, req, res, models));
-        app.put("/users/:id", (req, res) => this.edit.call(this, req, res, models));
-        app.put("/users/:id/contact", (req, res) => this.insertContact.call(this, req, res, models));
-        app.delete("/users/:id", (req, res) => this.delete.call(this, req, res, models));
+        app.get("/users", isAdmin, (req, res) => this.index.call(this, req, res, models));
+        app.get("/users/:id", isAdmin, (req, res) => this.user.call(this, req, res, models));
+        app.post("/users", isAdmin, (req, res) => this.insert.call(this, req, res, models));
+        app.put("/users/:id", isAdmin, (req, res) => this.edit.call(this, req, res, models));
+        app.put("/users/:id/contact", isAdmin, (req, res) => this.insertContact.call(this, req, res, models));
+        app.delete("/users/:id", isAdmin, (req, res) => this.delete.call(this, req, res, models));
     }
 
     async index(req, res, { User }) {

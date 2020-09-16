@@ -1,9 +1,11 @@
 "use strict";
 
+const { isAuthenticated } = require('../lib/auth');
+
 class ContactsController {
 
     init(app, models) {
-        app.get("/contacts", (req, res) => this.index.call(this, req, res, models));
+        app.get("/contacts", isAuthenticated, (req, res) => this.index.call(this, req, res, models));
         app.get("/contacts/:id", (req, res) => this.contact.call(this, req, res, models));
         app.post("/contacts", (req, res) => this.insert.call(this, req, res, models));
         app.put("/contacts/:id", (req, res) => this.edit.call(this, req, res, models));
