@@ -7,7 +7,7 @@ const user = (mongoose) => {
         email: {
             type: String,
             required: true,
-            createIndexes: true,
+            unique: true,
         },
         password: {
             type: String,
