@@ -6,9 +6,11 @@ class UserController {
 
     init(app, models) {
         app.get("/users", isAdmin, (req, res) => this.index.call(this, req, res, models));
-        app.get("/me", isAuthenticated, (req, res) => this.me.call(this, req, res, models));
-        app.put("/me", isAuthenticated, (req, res) => this.edit.call(this, req, res, models));
-        app.delete("/me", isAuthenticated, (req, res) => this.delete.call(this, req, res, models));
+        
+        app.route('/me')
+            .get(isAuthenticated, (req, res) => this.me.call(this, req, res, models))
+            .put(isAuthenticated, (req, res) => this.edit.call(this, req, res, models))
+            .delete(isAuthenticated, (req, res) => this.delete.call(this, req, res, models));
 
         // Sigin
         app.post('/signin', (req, res) => this.signIn.call(this, req, res, models));
