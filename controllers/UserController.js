@@ -71,8 +71,20 @@ class UserController {
         const id = req.params.id;
         const to_edit = req.body;
         try {
-            const user = await User.findByIdAndUpdate(id, to_edit, { new: true }).populate('contacts');
-            res.json(user);
+            const user = await User.findById(id).populate('contacts');
+            if (user) {
+                Object.entries(to_edit).forEach(([key, value]) => {
+                    if(key != 'role') {
+                        user[key] = value;
+                    }
+                });
+                await user.save();
+                res.status(200).json(user);
+            } else {
+                res.status(400).json({
+                    error: 'User not found.',
+                })
+            }
         } catch (error) {
             res.send(error);
         }

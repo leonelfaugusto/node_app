@@ -71,7 +71,9 @@ class AuthController {
             const user = await User.findById(req.me._id).populate('contacts');
             if (user) {
                 Object.entries(to_edit).forEach(([key, value]) => {
-                    user[key] = value;
+                    if(key != 'role') {
+                        user[key] = value;
+                    }
                 });
                 await user.save();
                 res.status(200).json(user);

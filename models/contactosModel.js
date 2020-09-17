@@ -1,5 +1,7 @@
 "use strict";
 
+const validator = require('validator');
+
 const contacto = (mongoose) => {
     const ContactsSchema = new mongoose.Schema(
         {
@@ -10,14 +12,16 @@ const contacto = (mongoose) => {
             telefone: {
                 type: Number,
                 required: true,
-                min: 100000000,
-                max: 999999999,
             },
         },
         {
             timestamps: true,
         }
     );
+
+    ContactsSchema.path('telefone').validate(function (telefone) {
+        return validator.isMobilePhone(telefone + '', 'pt-PT');
+     }, 'Wrong telefone format');
 
     const Contacto = mongoose.model(
         'contacto',

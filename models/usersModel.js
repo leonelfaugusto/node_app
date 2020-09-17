@@ -1,6 +1,7 @@
 "use strict";
 
 const bcrypt = require('bcrypt');
+const validator = require('validator');
 
 const user = (mongoose) => {
     const UserSchema = new mongoose.Schema(
@@ -14,6 +15,12 @@ const user = (mongoose) => {
                 type: String,
                 required: true,
             },
+            role: {
+                type: String,
+                required: true,
+                enum: ['ADMIN', 'USER'],
+                default: 'USER',
+            },
             contacts: [{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'contacto',
@@ -23,6 +30,10 @@ const user = (mongoose) => {
             timestamps: true,
         }
     );
+
+    UserSchema.path('email').validate(function (email) {
+        return validator.isEmail(email);
+     }, 'Wrong email format');
 
     UserSchema.pre('save', function(next) {
         var user = this;
